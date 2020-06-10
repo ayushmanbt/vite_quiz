@@ -1,0 +1,52 @@
+[
+    {
+        "question": "Who is the creator of node.js?",
+        "answers": [
+            "Brad Traversy",
+            "Evan You",
+            "Ryan Dahl",
+            "Bill Gates"
+        ],
+        "correctAnswerIndex": 2
+    },
+    {
+        "question": "Which array method will create a new array?",
+        "answers": [
+            "forEach",
+            "map",
+            "reduce",
+            "reuse"
+        ],
+        "correctAnswerIndex": 1
+    },
+    {
+        "question": "What is the order of application of 2 input margin and padding in CSS?",
+        "answers": [
+            "Top Bottom",
+            "Left Right",
+            "X-axis Y-axis",
+            "Y-axis X-axis"
+        ],
+        "correctAnswerIndex": 3
+    },
+    {
+        "question": "Which of these methods can be use select document element using both by id and class name?",
+        "answers": [
+            "querySelector",
+            "getElementById",
+            "getElementByClassName",
+            "getElementsByClassName"
+        ],
+        "correctAnswerIndex": 0
+    },
+    {
+        "question": "Using what is this quiz game made?",
+        "answers": [
+            "Vanilla Stack",
+            "Nuxt.js",
+            "Gatsby",
+            "Vite"
+        ],
+        "correctAnswerIndex": 3
+    }
+]
