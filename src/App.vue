@@ -6,118 +6,127 @@
 
     <div class="question_status_cover">
       <div class="question_status">
-        <div class="circle" v-for="(status,index) in answeringStatus" :key="index" :class="determineClass(status)">
+        <div
+          class="circle"
+          v-for="(status,index) in answeringStatus"
+          :key="index"
+          :class="determineClass(status)"
+        >
           <p v-if="status == 1">&checkmark;</p>
           <p v-if="status == 2">&cross;</p>
         </div>
       </div>
     </div>
-    
+
     <div class="container">
       <div v-if="!questionsOver">
-        <QuizQuestion :question="questions[currentIndex]" @answerEvent="answer"/>
+        <QuizQuestion :question="questions[currentIndex]" @answerEvent="answer" />
       </div>
 
       <div class="game_end" v-if="questionsOver">
         <h3 class="wait_text">All Questions over</h3>
-        <p> <strong>Correct Answers:</strong> {{correctAnswers}}</p>
-        <p> <strong>Wrong Answers:</strong> {{wrongAnswers}}</p>
-        <a class="btn" href="/">Replay</a>  
+        <p>
+          <strong>Correct Answers:</strong>
+          {{correctAnswers}}
+        </p>
+        <p>
+          <strong>Wrong Answers:</strong>
+          {{wrongAnswers}}
+        </p>
+        <a class="btn" href="/">Replay</a>
       </div>
-      
-      <h3 class="wait_text" v-if="waiting">Wait...</h3>
+
+      <h3 class="wait_text" v-if="isWaiting">Wait...</h3>
     </div>
   </div>
 </template>
 
 <script>
-import QuizQuestion from './components/QuizQuestion.vue';
-import questionObjects from './assets/questions.json';
+import QuizQuestion from "./components/QuizQuestion.vue";
+import questionObjects from "./assets/questions.json";
 
-const answeringStatus = {
+const status = {
   currentlyOn: 0,
   correctAnswer: 1,
   wrongAnswer: 2,
-  notArrived: 4,
-}
+  notArrived: 4
+};
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     QuizQuestion
   },
-  data(){
-    return{
+  data() {
+    return {
       currentIndex: 0,
       questions: questionObjects,
       correctAnswers: 0,
       wrongAnswers: 0,
-      waiting: false,
+      isWaiting: false,
       answeringStatus: [],
       questionsOver: false
-    }
+    };
   },
 
-  beforeMount(){
-    for(let i = 0; i<this.questions.length; i++){
-      this.answeringStatus[i] = answeringStatus.notArrived
+  beforeMount() {
+    for (let i = 0; i < this.questions.length; i++) {
+      this.answeringStatus.push(status.notArrived);
     }
 
-    this.answeringStatus[0] = answeringStatus.currentlyOn
+    this.answeringStatus[0] = status.currentlyOn;
   },
 
-  watch: {
-    currentIndex: function(oldVal, newVal) {
-      this.answeringStatus[newVal + 1] = answeringStatus.currentlyOn
-    }
-  },
-
-  methods:{
-    answer(index){
-      if(this.waiting) return;
-      this.waiting = true;
-      if(index === this.questions[this.currentIndex].correctAnswerIndex){
+  methods: {
+    answer(index) {
+      if (this.isWaiting) return;
+      this.isWaiting = true;
+      if (index === this.questions[this.currentIndex].correctAnswerIndex) {
         this.correctAnswers++;
-        this.answeringStatus[this.currentIndex] = answeringStatus.correctAnswer;
-      } 
-      else{
+        this.answeringStatus[this.currentIndex] = status.correctAnswer;
+      } else {
         this.wrongAnswers++;
-        this.answeringStatus[this.currentIndex] = answeringStatus.wrongAnswer;
-      } 
-      setTimeout(() => {if(this.questions.length - 1 !== this.currentIndex) this.currentIndex++; else this.questionsOver = true; this.waiting = false},1000)
+        this.answeringStatus[this.currentIndex] = status.wrongAnswer;
+      }
+      setTimeout(() => {
+        if (this.currentIndex + 1 !== this.questions.length) {
+          this.currentIndex++;
+
+          this.answeringStatus[this.currentIndex] = status.currentlyOn;
+        } else this.questionsOver = true;
+        this.isWaiting = false;
+      }, 1000);
     },
-    determineClass(status){
-      if(status === answeringStatus.currentlyOn) return "currently-on"
-      if(status === answeringStatus.correctAnswer) return "correct-answer"
-      else if(status === answeringStatus.wrongAnswer) return "wrong-answer"
-      else return "not-arrived"
+    determineClass(stat) {
+      if (stat == status.currentlyOn) return "currently-on";
+      if (stat == status.correctAnswer) return "correct-answer";
+      else if (stat == status.wrongAnswer) return "wrong-answer";
+      else return "not-arrived";
     }
   }
-}
+};
 </script>
 
 <style scoped>
-
-.topbar{
+.topbar {
   background-color: #434343;
   color: white;
   text-align: center;
   padding: 20px;
-  
 }
 
-.topbar h1{
-  font-family: 'Montserrat Alternates', sans-serif;
+.topbar h1 {
+  font-family: "Montserrat Alternates", sans-serif;
   font-weight: bold;
   font-size: 2.5rem;
 }
 
-.question_status_cover{
-  background-color: #E5E5E5;
+.question_status_cover {
+  background-color: #e5e5e5;
   padding: 15px 0;
 }
 
-.question_status{
+.question_status {
   display: flex;
   margin: 0 auto;
   justify-content: space-evenly;
@@ -126,7 +135,7 @@ export default {
   max-width: 400px;
 }
 
-.circle{
+.circle {
   width: 40px;
   height: 40px;
   border-radius: 100%;
@@ -137,38 +146,38 @@ export default {
   font-weight: bold;
 }
 
-.currently-on{
+.currently-on {
   background-color: #ff9900;
 }
 
-.correct-answer{
-background-color: #299602;
+.correct-answer {
+  background-color: #299602;
 }
 
-.wrong-answer{
-  background-color: #FF3535;
+.wrong-answer {
+  background-color: #ff3535;
 }
 
-.not-arrived{
+.not-arrived {
   background-color: #464646;
 }
 
-.container{
+.container {
   width: 80%;
   max-width: 800px;
   margin: 20px auto;
 }
 
-.game_end{
+.game_end {
   text-align: center;
   font-size: 1rem;
 }
 
-.game_end p{
-  margin: 10px 0
+.game_end p {
+  margin: 10px 0;
 }
 
-.btn{
+.btn {
   width: 100px;
   margin: 0 auto;
   border-radius: 15px;
@@ -176,15 +185,14 @@ background-color: #299602;
   transition: background 0.2s ease-in-out;
 }
 
-.btn:hover{
+.btn:hover {
   background: chartreuse;
 }
 
-.wait_text{
+.wait_text {
   font-size: 1.5rem;
   margin: 1em auto;
   text-align: center;
   color: #464545;
 }
-
 </style>
