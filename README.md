@@ -6,9 +6,6 @@ A simple quiz built with Vite + Vue.
 
 This app is hosted at: [https://vitequiz.netlify.app/](https://vitequiz.netlify.app/)
 
-Blog Post: Coming Soon
-YouTube Video: Coming Soon
-
 ## What is vite?
 
 Vite uses es6 module based javascript support in browser and serves your app wihtout any webpack. It also gives HMR(Hot Module Relaod).
